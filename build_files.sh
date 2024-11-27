@@ -1,4 +1,5 @@
 #!/bin/bash
+chmod +x build_files.sh
 
 # Install dependencies
 python3 -m pip install -r requirements.txt
