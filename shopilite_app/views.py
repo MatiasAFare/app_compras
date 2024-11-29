@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-import json
+from mongodb import *
+
 # Create your views here.
 
 def index(request):
@@ -15,3 +16,10 @@ def about(request):
         : "comegatos"
 
     })
+
+def db_test(request):
+    return HttpResponse(productos_collection.count_documents({}))
+
+def db_test_dos(request):
+    return HttpResponse(db.list_collections())
+
