@@ -1,6 +1,6 @@
-from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from mongodb import *
+from connect_mongodb import *
+
 
 # Create your views here.
 

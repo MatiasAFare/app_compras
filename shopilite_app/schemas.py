@@ -1,4 +1,4 @@
-from mongodb import *
+from connect_mongodb import *
 
 schema_producto = {
     "$jsonSchema": {
