@@ -1,3 +1,5 @@
+from mongodb import *
+
 schema_producto = {
     "$jsonSchema": {
         "bsonType": "object",
