@@ -78,12 +78,8 @@ WSGI_APPLICATION = 'shopilite_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'PyMongo',
-        'NAME': 'shopilite',
-        'ENFORCE_SCHEMA': False,
-        'CLIENT': {
-            'host': DATABASE_URL,
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
