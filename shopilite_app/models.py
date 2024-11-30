@@ -6,7 +6,7 @@ from datetime import datetime
 class Productos (models.Model):
     productoId = int
     product_name =  str
-    price = int
+    price = float
     establishment_name = str
     marca =  str
     datetime = datetime
