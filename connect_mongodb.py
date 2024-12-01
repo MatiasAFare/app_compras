@@ -10,4 +10,3 @@ db = client[os.getenv("DATABASE_NAME")]
 productos_collection = db["productos"]
 
 
-# print(db.list_collection_names())
