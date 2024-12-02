@@ -1,5 +1,4 @@
 # Description: This file contains the schemas for the collections in the database.
-# Agregar validacion para evitar que Lucas cree campos al pedo
 
 producto = {
 	"$jsonSchema": {
