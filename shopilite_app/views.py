@@ -22,20 +22,16 @@ def add_product(request):
             product_data["datetime"] = datetime.fromisoformat(
                 product_data["datetime"].replace("Z", "+00:00")
             )
-        product_id = productos_collection.insert_one(product_data).inserted_id
-
+        productos_collection.insert_one(product_data)
+        return JsonResponse(parse_json(product_data))
     except Exception as error:
-        return JsonResponse(
-            {"error": "Unknown error", "message": str(error)}, status=500
-        )
-
-    return JsonResponse(parse_json(product_data))
+        return JsonResponse(parse_json(error.__dict__), status=500)
 
 
 @require_http_methods(["GET"])
 def count_products(request):
     count = productos_collection.count_documents({})
-    response_data = dict(Cantidad=count)
+    response_data = dict(Count=count)
     return JsonResponse(response_data)
 
 
@@ -62,11 +58,13 @@ def modify_product(request, product_id):
 @require_http_methods(["DELETE"])
 def delete_product(request, product_id):
     return HttpResponse(productos_collection.delete_one({"_id": ObjectId(product_id)}))
+    
 
 
+@require_http_methods(["GET"])
 def get_product_by_id(request, product_id):
     product = productos_collection.find_one({"_id": ObjectId(product_id)})
     if product:
-        return JsonResponse(parse_json(product)) 
+        return JsonResponse(parse_json(product))
     else:
         return JsonResponse({"error": "Product not found."}, status=404)
