@@ -1,13 +1,10 @@
-from datetime import datetime
 import json
-from logging import exception
+from datetime import datetime
 from shopilite_app.utils import parse_json
 from bson import ObjectId
 from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed
 from django.views.decorators.http import require_http_methods
-from bson.json_util import dumps
 from connect_mongodb import *
-from pymongo.errors import BulkWriteError
 
 
 def index(request):
@@ -22,7 +19,7 @@ def add_product(request):
             product_data["datetime"] = datetime.fromisoformat(
                 product_data["datetime"].replace("Z", "+00:00")
             )
-        productos_collection.insert_one(product_data)
+        products_collection.insert_one(product_data)
         return JsonResponse(parse_json(product_data))
     except Exception as error:
         return JsonResponse(parse_json(error.__dict__), status=500)
@@ -30,7 +27,7 @@ def add_product(request):
 
 @require_http_methods(["GET"])
 def count_products(request):
-    count = productos_collection.count_documents({})
+    count = products_collection.count_documents({})
     response_data = dict(Count=count)
     return JsonResponse(response_data)
 
@@ -38,7 +35,7 @@ def count_products(request):
 @require_http_methods(["GET"])
 def get_products(request):
     try:
-        documents = parse_json(productos_collection.find({}))
+        documents = parse_json(products_collection.find({}))
         return JsonResponse(documents, safe=False)
     except Exception as error:
         return JsonResponse(
@@ -49,7 +46,7 @@ def get_products(request):
 @require_http_methods(["PUT"])
 def modify_product(request, product_id):
     product_data = json.loads(request.body)
-    product = productos_collection.find_one_and_update(
+    product = products_collection.find_one_and_update(
         {"_id": ObjectId(product_id)}, {"$set": product_data}, return_document=True
     )
     return JsonResponse(parse_json(product))
@@ -57,13 +54,12 @@ def modify_product(request, product_id):
 
 @require_http_methods(["DELETE"])
 def delete_product(request, product_id):
-    return HttpResponse(productos_collection.delete_one({"_id": ObjectId(product_id)}))
-    
+    return HttpResponse(products_collection.delete_one({"_id": ObjectId(product_id)}))
 
 
 @require_http_methods(["GET"])
 def get_product_by_id(request, product_id):
-    product = productos_collection.find_one({"_id": ObjectId(product_id)})
+    product = products_collection.find_one({"_id": ObjectId(product_id)})
     if product:
         return JsonResponse(parse_json(product))
     else:
